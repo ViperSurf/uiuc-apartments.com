@@ -1,2 +1,5 @@
 *.pyc
 __pycache__/
+
+# Ingestion virtualenv
+ingestion/.venv/

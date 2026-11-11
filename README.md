@@ -25,11 +25,14 @@ original backend went quiet.
   point it at a live API — including the original scraper backend; the
   data layer (`app/src/services/listings.ts`) understands both the
   modern feed and the original Firestore document shape.
-- **Campus-wide seed dataset.** Real Champaign-Urbana properties and
-  agencies (Campustown, Urbana, Savoy) with approximate rents, clearly
-  labeled as sample data in the UI — confirm pricing with the leasing
-  office. The dataset is one JSON file; replacing it with live
-  inventory is a data update, not a code change.
+- **Live listings, refreshed weekly.** Most listings are scraped from
+  landlord AppFolio portals (CPM, Weiner Companies, Ramshaw,
+  Champaign County Realty) by `ingestion/scrape.py` — one polite
+  request per portal, geocoded via OpenStreetMap. A scheduled GitHub
+  Actions workflow (`.github/workflows/refresh-listings.yml`) re-runs
+  the scrape every Monday, commits the refreshed feed, and redeploys
+  the site. A small seed set covers major student properties the
+  portals don't list, and stays labeled as sample data in the UI.
 - **Anonymous landlord reviews.** Per-landlord scores with the four
   subscores students care about, a scoreboard page, and a one-minute
   anonymous review form (no account, no name). Published reviews live
