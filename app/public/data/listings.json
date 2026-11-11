@@ -1,5 +1,5 @@
 {
- "updated_at": "2026-11-11T13:02:59-06:00",
+ "updated_at": "2026-11-11T22:28:04+00:00",
  "note": "Live listings scraped from landlord AppFolio portals (source=property_manager), plus clearly labeled sample listings (source=seed) for major student properties. Regenerate with ingestion/scrape.py.",
  "listings": [
   {
@@ -1516,6 +1516,40 @@
    "longitude": -88.24759999999999
   },
   {
+   "id": "af-a4ca3a5f22",
+   "title": "Full renovated townhome in Champaign - Available Now",
+   "agency": "Champaign County Realty",
+   "address": "3742 Summer Sage Ct., Champaign, IL 61822",
+   "rent": 1750,
+   "bedrooms": 3,
+   "bathrooms": 3.5,
+   "is_studio": false,
+   "available_date": "2026-11-11",
+   "link": "https://ccr.appfolio.com/listings/detail/e394adfd-764d-4193-aab0-9c14aac9d71f",
+   "source": "property_manager",
+   "property_type": "apartment",
+   "city": "Champaign",
+   "latitude": 40.1271584,
+   "longitude": -88.307084
+  },
+  {
+   "id": "af-e7bd448ce1",
+   "title": "Maintenance Free Condo in SW Champaign - Available August 2026",
+   "agency": "Champaign County Realty",
+   "address": "1632 Cobblefield Rd, Champaign, IL 61822",
+   "rent": 3800,
+   "bedrooms": 3,
+   "bathrooms": 2.0,
+   "is_studio": false,
+   "available_date": "2026-11-11",
+   "link": "https://ccr.appfolio.com/listings/detail/a977f187-3ccb-45f8-8f6b-b1079f224680",
+   "source": "property_manager",
+   "property_type": "apartment",
+   "city": "Champaign",
+   "latitude": 40.0976454,
+   "longitude": -88.3068546
+  },
+  {
    "id": "af-1973ee1dc9",
    "title": "3 Bedroom Home with unfinished Basement - Available Now",
    "agency": "Champaign County Realty",
@@ -1618,7 +1652,7 @@
    "longitude": -88.2265251
   },
   {
-   "id": "af-385737afca",
+   "id": "af-fc2d62a488",
    "title": "Huge 1 bedroom apartment Leasing August 2027!",
    "agency": "Weiner Companies",
    "address": "501 S. Race - 2S, Urbana, IL 61801",
@@ -1631,8 +1665,8 @@
    "source": "property_manager",
    "property_type": "studio",
    "city": "Urbana",
-   "latitude": 40.1141,
-   "longitude": -88.2108
+   "latitude": 40.110099999999996,
+   "longitude": -88.2068
   },
   {
    "id": "af-cd4e6d087b",
@@ -2009,7 +2043,7 @@
    "longitude": -88.2039
   },
   {
-   "id": "af-9fd18a69bc",
+   "id": "af-b32c2206c7",
    "title": "Available August 2027!",
    "agency": "Weiner Companies",
    "address": "303 W. Illinois - 1, Urbana, IL 61801",
@@ -2022,8 +2056,8 @@
    "source": "property_manager",
    "property_type": "studio",
    "city": "Urbana",
-   "latitude": 40.1149,
-   "longitude": -88.2116
+   "latitude": 40.1085,
+   "longitude": -88.2052
   },
   {
    "id": "af-a793783a54",
@@ -2043,7 +2077,7 @@
    "longitude": -88.20360000000001
   },
   {
-   "id": "af-8779b7cf91",
+   "id": "af-2474faa844",
    "title": "Now leasing for Fall 2027!",
    "agency": "Weiner Companies",
    "address": "503 S. Race - 2, Urbana, IL 61801",
@@ -2056,8 +2090,8 @@
    "source": "property_manager",
    "property_type": "studio",
    "city": "Urbana",
-   "latitude": 40.1117,
-   "longitude": -88.2084
+   "latitude": 40.1059,
+   "longitude": -88.2026
   },
   {
    "id": "af-e020c2f4da",
@@ -2077,7 +2111,7 @@
    "longitude": -88.2042
   },
   {
-   "id": "af-c9f047a961",
+   "id": "af-5f873ff71a",
    "title": "Now Leasing for Fall 2027!",
    "agency": "Weiner Companies",
    "address": "301 W, Illinois - 3, Urbana, IL 61801",
@@ -2090,8 +2124,8 @@
    "source": "property_manager",
    "property_type": "studio",
    "city": "Urbana",
-   "latitude": 40.1095,
-   "longitude": -88.20620000000001
+   "latitude": 40.1089,
+   "longitude": -88.2056
   },
   {
    "id": "af-f537b1b566",
@@ -2366,7 +2400,7 @@
    "longitude": -88.211205
   },
   {
-   "id": "af-5d5612a2d2",
+   "id": "af-e78fcbc8ec",
    "title": "Fall 2025 Campaign Double",
    "agency": "Ramshaw Real Estate",
    "address": "209 E. Armory , Champaign, IL 61820",
@@ -2553,7 +2587,7 @@
    "longitude": -88.239167
   },
   {
-   "id": "af-5d5612a2d2",
+   "id": "af-e78fcbc8ec",
    "title": "Fall 2025 Campaign Single",
    "agency": "Ramshaw Real Estate",
    "address": "209 E. Armory , Champaign, IL 61820",
