@@ -1,0 +1,71 @@
+name: Refresh listings (weekly scrape)
+
+on:
+  schedule:
+    # Mondays 11:00 UTC (about 5-6am in Champaign, depending on DST)
+    - cron: '0 11 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Share the Pages lock with the deploy workflow so the two never
+# deploy at the same time.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install scraper dependencies
+        run: |
+          python3 -m venv ingestion/.venv
+          ingestion/.venv/bin/pip install beautifulsoup4 requests
+      - name: Scrape landlord portals
+        run: ingestion/.venv/bin/python ingestion/scrape.py
+      - name: Commit the refreshed feed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/public/data/listings.json ingestion/geocode-cache.json
+          if git diff --cached --quiet; then
+            echo "Feed unchanged — nothing to commit."
+          else
+            git commit -m "Refresh listings feed (scheduled scrape)"
+            git push
+          fi
+
+  deploy:
+    needs: scrape
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # ref: main picks up the feed commit the scrape job just pushed
+      # (a plain checkout would use this run's original commit).
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install and build
+        working-directory: app
+        run: |
+          npm install --legacy-peer-deps --no-audit --no-fund
+          npm run build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: app/dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
