@@ -2,6 +2,8 @@
 import ApartmentCard from '../components/ApartmentCard.vue'
 import MapCard from '../components/MapCard.vue'
 import FilterControls from '../components/FilterControls.vue'
+import ListingDetail from '../components/ListingDetail.vue'
+import { fetchListings } from '../services/listings'
 import { onMounted, type Ref } from 'vue'
 import VirtualList from 'vue3-virtual-scroll-list'
 import { ref } from 'vue'
@@ -17,16 +19,9 @@ function dateIsBetween(date: Date, start: Date, end: Date) {
 }
 
 function getData(): Promise<Apartment[]> {
-  return fetch(import.meta.env.VITE_DATA_ENDPOINT_URL)
-    .then((response) => response.json())
-    .then((document: any) => {
-      localStorage.last_stored = document.updateTime
-      return Object.entries(document.fields).map(([id, value]) => {
-        var elem = JSON.parse(value.stringValue)
-        elem['id'] = id
-        return elem
-      })
-    })
+  // Data layer: bundled feed by default, live API when
+  // VITE_DATA_ENDPOINT_URL is set (see services/listings.ts).
+  return fetchListings()
 }
 
 // source: https://stackoverflow.com/a/42532563
@@ -55,6 +50,7 @@ export default {
     FilterControls,
     MapCard,
     VirtualList,
+    ListingDetail,
   },
   computed: {
     agencies(): Array<string> {
@@ -136,6 +132,7 @@ export default {
   setup() {
     const allApartments: Ref<Array<Apartment>> = ref([])
     const selectedApartment: Ref<Apartment> = ref({} as Apartment)
+    const detailApartment: Ref<Apartment | null> = ref(null)
     const loading = ref(true)
     const error = ref(null)
     const apartmentCard = ApartmentCard
@@ -188,6 +185,7 @@ export default {
     return {
       apartmentCard,
       selectedApartment,
+      detailApartment,
       allApartments,
       filter,
       bounds,
@@ -200,6 +198,9 @@ export default {
     onApartmentHover(apartment: Apartment) {
       this.selectedApartment = apartment
     },
+    onApartmentSelect(apartment: Apartment) {
+      this.detailApartment = apartment
+    },
   },
 }
 </script>
@@ -207,6 +208,12 @@ export default {
 <template>
   <main>
     <h1 class="my-8 text-4xl font-bold text-center">UIUC Apartments</h1>
+    <p class="mx-auto -mt-4 mb-2 max-w-2xl px-4 text-center text-sm text-gray-500">
+      Apartment listings across Champaign-Urbana, plus anonymous student
+      reviews of every landlord — so management has to do better.
+      Listings currently shown are a sample (seed) dataset; rents are
+      approximate, confirm with the leasing office.
+    </p>
     <div class="md:grid md:grid-cols-2 lg:grid-cols-4 mt-4">
       <div class="col-span-1 mx-4">
         <FilterControls
@@ -229,6 +236,7 @@ export default {
           :data-sources="boundedFilteredApartments"
           :data-component="apartmentCard"
           @apartment-hover="onApartmentHover"
+          @apartment-select="onApartmentSelect"
         />
         <!-- <ApartmentCard
           v-for="apartment in filteredApartments"
@@ -237,5 +245,10 @@ export default {
         /> -->
       </div>
     </div>
+    <ListingDetail
+      v-if="detailApartment"
+      :apartment="detailApartment"
+      @close="detailApartment = null"
+    />
   </main>
 </template>

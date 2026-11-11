@@ -1,5 +1,6 @@
 <script lang="ts">
-import type { Apartment } from '../types'
+import type { Apartment, AgencyScores } from '../types'
+import { loadReviews, scoresFor } from '../services/reviews'
 export default {
   props: {
     source: {
@@ -7,12 +8,22 @@ export default {
       required: true,
     },
   },
+  data() {
+    return { scores: null as AgencyScores | null }
+  },
+  async mounted() {
+    const rs = await loadReviews()
+    this.scores = scoresFor(rs, this.source.agency)
+  },
   methods: {
     apartmentHover(apartment: Apartment) {
       this.$parent?.$parent?.$emit('apartment-hover', apartment)
     },
+    apartmentSelect(apartment: Apartment) {
+      this.$parent?.$parent?.$emit('apartment-select', apartment)
+    },
   },
-  emits: ['apartment-hover'],
+  emits: ['apartment-hover', 'apartment-select'],
   computed: {
     pricePerPerson(): string {
       // show the price per person rounded to 2 decimal places only if it is not an integer
@@ -43,7 +54,9 @@ export default {
         rel="noreferrer noopener"
         class="focus:outline-none"
       >
-        <p class="text-sm font-medium text-gray-900">{{ source.address }}</p>
+        <p class="text-sm font-medium text-gray-900">
+          {{ source.title ?? source.address }}
+        </p>
         <div class="truncate text-sm text-gray-500">
           <span class="font-bold text-gray-900">
             <font-awesome-icon icon="dollar-sign" />
@@ -58,9 +71,30 @@ export default {
             <font-awesome-icon icon="bath" /> {{ source.bathrooms }}
           </div>
           Available: {{ source.available_date }} <br />
-          {{ source.agency }}
+          {{ source.agency }}<span v-if="source.city"> · {{ source.city }}</span>
         </div>
       </a>
+    </div>
+    <div class="flex flex-col items-end gap-2">
+      <span
+        v-if="scores"
+        class="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800"
+        :title="`${scores.count} student review(s)`"
+      >
+        {{ scores.overall.toFixed(1) }} ★ ({{ scores.count }})
+      </span>
+      <span
+        v-else
+        class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500"
+      >
+        No reviews yet
+      </span>
+      <button
+        class="rounded bg-[#13294B] px-3 py-1 text-xs font-medium text-white hover:bg-[#1d3a66]"
+        @click.prevent="apartmentSelect(source)"
+      >
+        Details &amp; reviews
+      </button>
     </div>
   </div>
 </template>
