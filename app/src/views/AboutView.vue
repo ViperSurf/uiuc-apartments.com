@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen flex-col px-10">
+  <div class="flex min-h-screen flex-col px-10">
     <h1 class="text-4xl mt-5 mb-5">About</h1>
     <p>
       This is an app to help you find apartments in Champaign-Urbana. We noticed that popular apartment search sites
@@ -11,9 +11,33 @@
     </p>
     <p>
       It is a work in progress, and is not affiliated with any real estate
-      agencies. We scrape data from the agency websites daily. Found a bug?
-      Submit an issue on  <a class="text-blue-600 hover:text-blue-800" href="https://github.com/uiuc-apartments/uiuc-apartments.com/issues">Github</a>.
+      agencies. Found a bug?
+      Submit an issue on  <a class="text-blue-600 hover:text-blue-800" href="https://github.com/ViperSurf/uiuc-apartments.com/issues">Github</a>.
     </p>
+    <div>
+      <h2 class="text-4xl mt-5 mb-5">The 2026 revival</h2>
+      <p>
+        This site began in 2022 as
+        <a class="text-blue-600 hover:text-blue-800" href="https://github.com/reteps/uiuc-apartments.com">reteps/uiuc-apartments.com</a>,
+        built by Pete, Hassam, and Richard (below), who scraped agency
+        sites so students could search every listing in one place. The
+        original backend went quiet after 2022. In 2026
+        <a class="text-blue-600 hover:text-blue-800" href="https://github.com/ViperSurf">Bara Zalloum (ViperSurf)</a>
+        forked and revived it: the frontend now runs on a data feed
+        (<code>data/listings.json</code>) that any source can publish to,
+        and it adds the piece the original never had — anonymous student
+        reviews of landlords, scored on maintenance, communication,
+        fairness, and move-out, so management has to do better.
+      </p>
+      <p class="mt-3">
+        Until live agency feeds are reconnected, the listings shown are
+        a clearly labeled sample dataset of real Champaign-Urbana
+        properties with approximate rents. Always confirm pricing and
+        availability with the leasing office. Reviews are never
+        invented: the review board starts empty and fills with real
+        student submissions.
+      </p>
+    </div>
     <div>
       <h2 class="text-4xl mt-5 mb-5">Contributors</h2>
       <div class="flex flex-col md:flex-row w-full justify-around">

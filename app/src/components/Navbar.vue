@@ -1,12 +1,13 @@
 <script setup lang="ts">
 const navigation = [
   { name: 'Home', href: '/' },
+  { name: 'Landlord Reviews', href: '/reviews' },
   { name: 'About', href: '/about' },
 ]
 </script>
 
 <template>
-  <header class="bg-teal-600">
+  <header class="bg-[#13294B]">
     <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
       <div
         class="flex w-full items-center justify-between border-b border-indigo-500 py-6 lg:border-none"
