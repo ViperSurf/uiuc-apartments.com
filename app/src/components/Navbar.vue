@@ -2,6 +2,7 @@
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Landlord Reviews', href: '/reviews' },
+  { name: 'For Landlords', href: '/sponsors' },
   { name: 'About', href: '/about' },
 ]
 </script>

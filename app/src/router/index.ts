@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import AboutView from "../views/AboutView.vue";
 import ReviewsView from "../views/ReviewsView.vue";
+import SponsorsView from "../views/SponsorsView.vue";
 
 // Hash history keeps every route working on plain static hosting
 // (GitHub Pages) with no server rewrites.
@@ -17,6 +18,11 @@ const router = createRouter({
       path: "/reviews",
       name: "reviews",
       component: ReviewsView,
+    },
+    {
+      path: "/sponsors",
+      name: "sponsors",
+      component: SponsorsView,
     },
     {
       path: "/about",
