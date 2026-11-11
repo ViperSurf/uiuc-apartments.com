@@ -1,0 +1,49 @@
+{
+  "id": "uiuc-champaign",
+  "region_id": "champaign-urbana-il",
+  "name": "University of Illinois Urbana-Champaign",
+  "short_name": "UIUC",
+  "university": "University of Illinois Urbana-Champaign",
+  "city": "Champaign",
+  "state": "IL",
+  "timezone": "America/Chicago",
+  "enabled": true,
+  "map": {
+    "center": { "lat": 40.1075, "lng": -88.2295 },
+    "zoom": 15,
+    "bounds": [
+      [40.06, -88.32],
+      [40.15, -88.16]
+    ]
+  },
+  "hubs": [
+    { "id": "main-quad", "name": "UIUC Main Quad", "short_name": "Quad", "lat": 40.1074, "lng": -88.2272 },
+    {
+      "id": "grainger-library",
+      "name": "Grainger Engineering Library",
+      "short_name": "Grainger",
+      "lat": 40.1125,
+      "lng": -88.2269
+    },
+    {
+      "id": "siebel-cs",
+      "name": "Siebel Center for Computer Science",
+      "short_name": "Siebel",
+      "lat": 40.1138,
+      "lng": -88.2249
+    },
+    { "id": "illini-union", "name": "Illini Union", "short_name": "Union", "lat": 40.1093, "lng": -88.2272 },
+    { "id": "main-library", "name": "Main Library", "short_name": "Main Lib", "lat": 40.1047, "lng": -88.229 },
+    {
+      "id": "arc",
+      "name": "Activities & Recreation Center (ARC)",
+      "short_name": "ARC",
+      "lat": 40.1013,
+      "lng": -88.236
+    }
+  ],
+  "service_area_cities": ["Champaign", "Urbana", "Savoy"],
+  "theme": { "primary": "#13294B", "accent": "#FF5F05" },
+  "academic_calendar": { "fall_start_month": 8, "spring_start_month": 1, "summer_start_month": 5 }
+}
+
