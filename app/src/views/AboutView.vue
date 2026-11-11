@@ -30,9 +30,9 @@
         fairness, and move-out, so management has to do better.
       </p>
       <p class="mt-3">
-        Until live agency feeds are reconnected, the listings shown are
-        a clearly labeled sample dataset of real Champaign-Urbana
-        properties with approximate rents. Always confirm pricing and
+        The listings now combine live listings scraped from landlord
+        portals with a small, clearly labeled sample set for major
+        student properties. Always confirm pricing and
         availability with the leasing office. Reviews are never
         invented: the review board starts empty and fills with real
         student submissions.
@@ -43,7 +43,7 @@
       <div class="flex flex-col md:flex-row w-full justify-around">
         <div class="rounded shadow px-5 mx-10 flex-grow">
           <img src="@/assets/hassam_pfp.jpeg" alt="avatar"
-            class="w-60 h-60 rounded-full mx-auto" />
+            class="w-60 h-60 rounded-full object-cover mx-auto" />
           <div class="text-center pt-10">
             <h3 class="text-3xl">Hassam</h3>
             <p><a href="https://github.com/heasummn"><font-awesome-icon icon="fa-brands fa-github" /> Github </a></p>
@@ -51,7 +51,7 @@
         </div>
         <div class="rounded shadow px-5 mx-10 flex-grow">
           <img src="@/assets/richard_pfp.png" alt="avatar"
-            class="w-60 h-60 rounded-full mx-auto" />
+            class="w-60 h-60 rounded-full object-cover mx-auto" />
           <div class="text-center pt-10">
             <h3 class="text-3xl">Richard</h3>
             <p><a href="https://github.com/richyliu"><font-awesome-icon icon="fa-brands fa-github" /> Github </a></p>
@@ -59,7 +59,7 @@
         </div>
         <div class="rounded shadow px-5 mx-10 flex-grow">
           <img src="@/assets/pete_pfp.jpeg" alt="avatar"
-            class="w-60 h-60 rounded-full mx-auto" />
+            class="w-60 h-60 rounded-full object-cover mx-auto" />
           <div class="text-center pt-10">
             <h3 class="text-3xl">Pete</h3>
             <p><a href="https://github.com/reteps"><font-awesome-icon icon="fa-brands fa-github" /> Github </a></p>
