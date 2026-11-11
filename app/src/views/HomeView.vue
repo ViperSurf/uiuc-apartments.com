@@ -128,11 +128,53 @@ export default {
           return perPersonA - perPersonB
         })
     },
+    searchedApartments(): Apartment[] {
+      const q = (this.searchText ?? '').trim().toLowerCase()
+      if (!q) return this.boundedFilteredApartments
+      return this.boundedFilteredApartments.filter((a: Apartment) =>
+        [a.title, a.address, a.agency, a.city]
+          .filter(Boolean)
+          .some((s) => (s as string).toLowerCase().includes(q))
+      )
+    },
+    listApartments(): Apartment[] {
+      // List view: no map bounds — every match, searchable + sortable.
+      // Sponsored listings pin to the top and are always labeled.
+      const q = (this.searchText ?? '').trim().toLowerCase()
+      let rows = this.filteredApartments
+      if (q) {
+        rows = rows.filter((a: Apartment) =>
+          [a.title, a.address, a.agency, a.city]
+            .filter(Boolean)
+            .some((s) => (s as string).toLowerCase().includes(q))
+        )
+      }
+      const perBed = (a: Apartment) => a.rent / Math.max(1, a.bedrooms)
+      const sorted = [...rows].sort((a, b) => {
+        switch (this.sortBy) {
+          case 'perBedDesc':
+            return perBed(b) - perBed(a)
+          case 'bedsDesc':
+            return b.bedrooms - a.bedrooms
+          case 'dateAsc':
+            return String(a.available_date).localeCompare(String(b.available_date))
+          default:
+            return perBed(a) - perBed(b)
+        }
+      })
+      return [
+        ...sorted.filter((a) => a.sponsored),
+        ...sorted.filter((a) => !a.sponsored),
+      ]
+    },
   },
   setup() {
     const allApartments: Ref<Array<Apartment>> = ref([])
     const selectedApartment: Ref<Apartment> = ref({} as Apartment)
     const detailApartment: Ref<Apartment | null> = ref(null)
+    const viewMode = ref('split')
+    const searchText = ref('')
+    const sortBy = ref('perBedAsc')
     const loading = ref(true)
     const error = ref(null)
     const apartmentCard = ApartmentCard
@@ -186,6 +228,9 @@ export default {
       apartmentCard,
       selectedApartment,
       detailApartment,
+      viewMode,
+      searchText,
+      sortBy,
       allApartments,
       filter,
       bounds,
@@ -211,10 +256,52 @@ export default {
     <p class="mx-auto -mt-4 mb-2 max-w-2xl px-4 text-center text-sm text-gray-500">
       Apartment listings across Champaign-Urbana, plus anonymous student
       reviews of every landlord — so management has to do better.
-      Listings currently shown are a sample (seed) dataset; rents are
-      approximate, confirm with the leasing office.
+      Most listings are pulled from live landlord portals; a few major
+      properties are sample listings, so confirm pricing with the
+      leasing office.
     </p>
-    <div class="md:grid md:grid-cols-2 lg:grid-cols-4 mt-4">
+    <div class="mx-auto mb-2 flex max-w-3xl flex-wrap items-center justify-center gap-2 px-4">
+      <div class="flex overflow-hidden rounded-lg border border-gray-300" role="group" aria-label="View mode">
+        <button
+          type="button"
+          class="px-4 py-2 text-sm font-medium"
+          :class="viewMode === 'split' ? 'bg-[#13294B] text-white' : 'bg-white text-gray-700'"
+          @click="viewMode = 'split'"
+        >
+          Map view
+        </button>
+        <button
+          type="button"
+          class="px-4 py-2 text-sm font-medium"
+          :class="viewMode === 'list' ? 'bg-[#13294B] text-white' : 'bg-white text-gray-700'"
+          @click="viewMode = 'list'"
+        >
+          List view
+        </button>
+      </div>
+      <input
+        v-model="searchText"
+        type="search"
+        placeholder="Search by name, street, landlord, or city…"
+        aria-label="Search listings"
+        class="w-72 rounded-lg border border-gray-300 px-3 py-2 text-sm"
+      />
+      <select
+        v-if="viewMode === 'list'"
+        v-model="sortBy"
+        aria-label="Sort listings"
+        class="rounded-lg border border-gray-300 px-3 py-2 text-sm"
+      >
+        <option value="perBedAsc">Price per bed: low to high</option>
+        <option value="perBedDesc">Price per bed: high to low</option>
+        <option value="bedsDesc">Most bedrooms</option>
+        <option value="dateAsc">Available soonest</option>
+      </select>
+      <span class="text-sm text-gray-500" aria-live="polite">
+        {{ viewMode === 'list' ? listApartments.length : searchedApartments.length }} places
+      </span>
+    </div>
+    <div v-if="viewMode === 'split'" class="md:grid md:grid-cols-2 lg:grid-cols-4 mt-4">
       <div class="col-span-1 mx-4">
         <FilterControls
           :agencies="agencies"
@@ -233,7 +320,7 @@ export default {
         <VirtualList
           style="height: 75vh; overflow-y: auto"
           :data-key="'id'"
-          :data-sources="boundedFilteredApartments"
+          :data-sources="searchedApartments"
           :data-component="apartmentCard"
           @apartment-hover="onApartmentHover"
           @apartment-select="onApartmentSelect"
@@ -244,6 +331,20 @@ export default {
           :apartment="apartment"
         /> -->
       </div>
+    </div>
+    <div v-else class="mx-auto max-w-5xl px-4">
+      <div class="grid gap-2 md:grid-cols-2">
+        <ApartmentCard
+          v-for="apartment in listApartments"
+          :key="apartment.id"
+          :source="apartment"
+          @apartment-select="onApartmentSelect"
+        />
+      </div>
+      <p v-if="listApartments.length === 0" class="py-10 text-center text-gray-500">
+        No places match those filters yet. Try widening the rent range,
+        clearing the search, or choosing “Any date”.
+      </p>
     </div>
     <ListingDetail
       v-if="detailApartment"

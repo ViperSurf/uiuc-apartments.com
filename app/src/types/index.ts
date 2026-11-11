@@ -21,6 +21,10 @@ export interface Apartment {
   property_type?: string
   /** 'seed' = demonstration dataset; 'property_manager' = live feed. */
   source?: string
+  /** Sponsorship (see docs/listing-schema.ts): featured placement must
+   *  always render with its disclosure label. */
+  sponsored?: boolean
+  sponsor_tier?: 'top' | 'featured' | 'standard' | null
 }
 
 export type Filter = {

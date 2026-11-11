@@ -17,9 +17,11 @@ export default {
   },
   methods: {
     apartmentHover(apartment: Apartment) {
+      this.$emit('apartment-hover', apartment)
       this.$parent?.$parent?.$emit('apartment-hover', apartment)
     },
     apartmentSelect(apartment: Apartment) {
+      this.$emit('apartment-select', apartment)
       this.$parent?.$parent?.$emit('apartment-select', apartment)
     },
   },
@@ -76,6 +78,13 @@ export default {
       </a>
     </div>
     <div class="flex flex-col items-end gap-2">
+      <span
+        v-if="source.sponsored"
+        class="rounded-full bg-[#FF5F05] px-2 py-0.5 text-xs font-semibold text-white"
+        title="Paid placement — sponsorship is always labeled"
+      >
+        Sponsored
+      </span>
       <span
         v-if="scores"
         class="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-800"
