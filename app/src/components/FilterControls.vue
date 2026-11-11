@@ -1,6 +1,7 @@
 <script lang="ts">
 import { watch, ref } from 'vue'
 import type { Filter } from '../types'
+import { semesterPresets } from '../utils/semester'
 
 export default {
   props: ['agencies'],
@@ -19,7 +20,25 @@ export default {
     const maxRent = ref(10000)
     const accordionOpen = ref(true)
     const selectedAgencies = ref([])
-    const dateRange = ref([new Date(2023, 7, 1), new Date(2023, 8, 31)])
+    // Default: any date. The old build hard-coded Aug-Oct 2023 here,
+    // which filtered out every current listing.
+    const dateRange = ref<Date[] | null>(null)
+    const presets = semesterPresets()
+    const activePreset = ref('Any date')
+    const setPreset = (label: string, range: [Date, Date] | null) => {
+      activePreset.value = label
+      dateRange.value = range
+    }
+    watch(dateRange, (v) => {
+      if (!v || v.length !== 2) {
+        activePreset.value = 'Any date'
+        return
+      }
+      const match = presets.find(
+        (p) => p.range[0].getTime() === v[0]?.getTime() && p.range[1].getTime() === v[1]?.getTime()
+      )
+      activePreset.value = match ? match.label : ''
+    })
 
     const filterApartments = () => {
       const filter: Filter = {
@@ -29,7 +48,7 @@ export default {
         maxBathrooms: maxBathrooms.value,
         minRent: minRent.value,
         maxRent: maxRent.value,
-        dateRange: dateRange.value,
+        dateRange: dateRange.value ?? [],
         selectedAgencies: selectedAgencies.value,
       }
       context.emit('update:filter-apartments', filter)
@@ -58,7 +77,10 @@ export default {
       minRent,
       maxRent,
       selectedAgencies,
-      accordionOpen
+      accordionOpen,
+      presets,
+      activePreset,
+      setPreset
     }
   },
 }
@@ -205,7 +227,30 @@ export default {
         </div>
       </div>
     </div>
-    <Datepicker v-model="dateRange" range :enableTimePicker="false" />
+    <div class="mt-2">
+      <span class="block text-sm font-medium text-gray-700 mb-1">Available</span>
+      <div class="flex flex-wrap gap-1 mb-2" role="group" aria-label="Availability presets">
+        <button
+          type="button"
+          class="rounded-full px-3 py-1 text-xs font-medium border"
+          :class="activePreset === 'Any date' ? 'bg-[#13294B] text-white border-[#13294B]' : 'bg-white text-gray-700 border-gray-300'"
+          @click="setPreset('Any date', null)"
+        >
+          Any date
+        </button>
+        <button
+          v-for="p in presets"
+          :key="p.label"
+          type="button"
+          class="rounded-full px-3 py-1 text-xs font-medium border"
+          :class="activePreset === p.label ? 'bg-[#13294B] text-white border-[#13294B]' : 'bg-white text-gray-700 border-gray-300'"
+          @click="setPreset(p.label, p.range)"
+        >
+          {{ p.label }}
+        </button>
+      </div>
+      <Datepicker v-model="dateRange" range :enableTimePicker="false" placeholder="Or pick a custom range" />
+    </div>
     <p class="mt-4 text-sm text-gray-700">
       Use the shape buttons below the zoom controls on the map to select
       apartments within a region.
